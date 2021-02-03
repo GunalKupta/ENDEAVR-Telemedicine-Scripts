@@ -1,6 +1,7 @@
 // Scripts for ENDEAVRide Van
 
 function createMeeting(patientResponses) {
+  // Create a new Google Meet for patient and doctor to have an appointment in the van
   var d = new Date();
   
   console.log("creating new Van meeting " + d);
@@ -12,6 +13,7 @@ function createMeeting(patientResponses) {
   var d2 = new Date(endTime);
   var end = d2.toJSON(); // date readable by Google Calendar
 
+  // Each doctor has their own sheet with their own patients, as well as an RDD folder for real-time vitals to be shared
   var dataFile = DriveApp.getFileById(doctor.destinationId);
   var rddFolder = DriveApp.getFileById(doctor.rddId);
 
@@ -68,7 +70,11 @@ function createMeeting(patientResponses) {
 
 
 function sendVanMail(meetingURL, patientResponses) {
-  
+  /*
+  Send a formatted email to the doctor to inform them that a patient is ready,
+  as well as providing them with the meeting link and their doctor-specific
+  Patient sheet and RDD folder
+  */
   let htmlbody = createHTMLBody(meetingURL, patientResponses);
 
   var ImageBlob = UrlFetchApp.fetch("https://endeavr.city/wp-content/uploads/2020/03/ENDEAVRide-1024x234.png").getBlob().setName(ImageBlob);

@@ -1,4 +1,11 @@
 /*
+This script was created by Kunal Gupta for ENDEAVR and its subsidiary ENDEAVRide,
+to automate the telemedicine process for users of the autonomous telemedicine van
+and telemedicine booth located in Nolanville, TX.
+*/
+
+/*
+Form responses:
 B: Patient name
 C: Birth date
 D: Doctor
@@ -14,6 +21,7 @@ O-W: Problems
 
 let doctorSelectionColumn = 7; // Column H contains doctor selection
 
+// Doctor classes
 let drwong = {
   name:'Dr. Wong', 
   email:'thwong@ihealth.clinic', 
@@ -32,6 +40,7 @@ let drcolon = {
   rddId:'10DzuXKihazo-oq0Cs-ccHHhD2bDFniIu'
   };
 
+// Default doctor value for testing
 let kunal = {
   name:'Kunal', 
   email:'kgupta@endeavr.city', 
@@ -51,6 +60,14 @@ var ss = SpreadsheetApp.getActiveSpreadsheet();
 function onFormSubmit(e){
   Utilities.sleep(1000);
   console.log("onFormSubmit called");
+  /*
+  When a form is submitted:
+    1. Determine which doctor they selected
+    2. Copy the form responses (containing PHI) into the sheet that is shared with that doctor
+    3. Determine whether the patient is in the van or the booth
+      a. If in van, create a new Google Meet and send a formatted email to the doctor
+      b. If in booth, add the doctor to the already created Google Meet call and send a formatted email to them
+  */
   
   var values = e.values;
   
@@ -109,6 +126,7 @@ function copyData() {
 
 
 function createHTMLBody(meetingURL, patientResponses) {
+  // Creates a custom email with HTML formatting to send to the doctor to inform them that a patient is waiting
 
   var output = "<HTML><BODY><P style=\"font-family:'Times New Roman';font-size:18px\">"
   + "Hello " + doctor.name + ",<BR><BR>"

@@ -14,13 +14,14 @@ function doGet() {
 }
 
 function getMeetingUrl() {
+  // returns meeting URL for HTML kiosk
   var url = props.getProperty('meetingUrl');
   console.log("Returning meeting url: " + url)
   return url;
 }
 
 function createBoothMeeting() {
-  // Runs every morning, creating a new meeting URL each day for security
+  // Runs automatically every morning, creating a new meeting URL each day for security
   var d = new Date();
   
   console.log("creating new Booth meeting " + d);
@@ -75,13 +76,13 @@ function createBoothMeeting() {
     
     props.setProperties({'meetingUrl': meetingUrl, 'eventId': response.id});
 
-  
   } catch(e) {
     console.log("Oh no: " + e.message);
   }
 }
 
 function addDoctorToBooth() {
+  // Add doctor's email as a guest to the booth Meet call whenever a booth patient requests that doctor
   console.log("Adding " + doctor.name + " to Booth Meet");
   var newAttendees = permanentBoothStaff.concat({"email": doctor.email});
   var resource = { attendees: newAttendees };
