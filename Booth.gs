@@ -2,7 +2,8 @@
 
 // Script properties store booth meeting url, updated daily
 var props = PropertiesService.getScriptProperties();
-var assistantEmails = [{"email": "acooper@endeavr.city"}, {"email": "nmanoj@endeavr.city"}, {"email": "samina@endeavr.city"}];
+var assistantEmails = [{"email": "wli@endeavr.city"}, {"email": "acooper@endeavr.city"}, 
+                      {"email": "nmanoj@endeavr.city"}, {"email": "samina@endeavr.city"}];
 let endeavrBooth = 'booth@endeavr.city';
 var permanentBoothStaff = assistantEmails.concat({"email": endeavrBooth});
 
@@ -93,13 +94,13 @@ function addDoctorToBooth() {
 function sendBoothMail(patientResponses) {
   let meetingURL = props.getProperty('meetingUrl');
 
-  let htmlbody = createHTMLBody(meetingURL, patientResponses);
+  let htmlbody = createBoothHTMLBody(meetingURL, patientResponses);
 
-  var ImageBlob = UrlFetchApp.fetch("https://endeavr.city/wp-content/uploads/2020/03/ENDEAVRide-1024x234.png").getBlob().setName(ImageBlob);
+  var ImageBlob = UrlFetchApp.fetch("https://i.postimg.cc/m2bXVsCY/ENDEAVR-main-logo.png").getBlob().setName(ImageBlob);
 
-  GmailApp.sendEmail(doctor.email, "ENDEAVRide Telemedicine Appointment is Ready! (PHI Enclosed)",
+  GmailApp.sendEmail(doctor.email, "ENDEAVR Booth Telemedicine Appointment is Ready! (PHI Enclosed)",
                     "Hello " + doctor.name + ",\n\n"
-                    + "An ENDEAVRide patient (" + patientResponses[1] + ") is waiting for your appointment to begin immediately. Please see the patient using the following link:\n\n"
+                    + "An ENDEAVR patient (" + patientResponses[1] + ") is waiting for your appointment to begin immediately. Please see the patient using the following link:\n\n"
                     + meetingURL + "\n\n"
                     + "Please visit the following link to access the patient’s intake form data including vital signs and symptom descriptions. Please make sure you are signed in to " + doctor.email + " in order to access it:\n\n"
                     + doctor.destinationUrl + "\n\n"
@@ -112,7 +113,23 @@ function sendBoothMail(patientResponses) {
 }
 
 
+function createBoothHTMLBody(meetingURL, patientResponses) {
+  // Creates a custom email with HTML formatting to send to the doctor to inform them that a patient is waiting
 
+  var output = "<HTML><BODY><P style=\"font-family:'Times New Roman';font-size:18px\">"
+  + "Hello " + doctor.name + ",<BR><BR>"
+  + "An ENDEAVR Booth patient (<B>" + patientResponses[1] + "</B>) is waiting for your appointment to begin <B><U>immediately</U></B>. Please see the patient using the following link:<BR><BR>"
+  + "<A target=_blank href=\"" + meetingURL + "\">" + meetingURL + "</A><BR><BR>"
+  + "Please visit the following link to access the <B>patient’s intake form data</B> including vital signs and symptom descriptions. Please make sure you are signed in to <B>" + doctor.email + "</B> in order to access it:<BR><BR>"
+  + "<A target=_blank href=\"" + doctor.destinationUrl + "\">" + doctor.destinationUrl + "</A><BR><BR>"
+  + "While you are seeing the patient, you can perform <B>remote diagnostics</B> using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:<BR><BR>"
+  + "<A target=_blank href=\"" + doctor.rddUrl + "\">" + doctor.rddUrl + "</A><BR><BR>"
+  + "If you run into any problems, please call 1-844-ENDEAVR (363-3287).<BR><BR>"
+  + "Thanks,<BR>ENDEAVR<BR>Futureproof small communities<BR><BR>"
+  + '<img src="cid:image">'
+  + "</P></BODY></HTML>";
 
+  return output;
+}
 
 
