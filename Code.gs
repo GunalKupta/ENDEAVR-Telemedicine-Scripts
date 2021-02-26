@@ -25,6 +25,7 @@ let doctorSelectionColumn = 7; // Column H contains doctor selection
 let drwong = {
   name:'Dr. Wong', 
   email:'thwong@ihealth.clinic', 
+  phone:'4127760231@mms.att.net',   // UPDATE
   destinationUrl:'https://docs.google.com/spreadsheets/d/1_zoAkD7FvOGkiLZqOp4ghUd5xg5jIEZOZQoWr2GCl_U/edit?usp=sharing',
   rddUrl:'https://drive.google.com/drive/folders/1dG2oi6rOHJSZz1J8iiWGk1Z0VQFODWhH?usp=sharing',
   destinationId:'1_zoAkD7FvOGkiLZqOp4ghUd5xg5jIEZOZQoWr2GCl_U',
@@ -34,6 +35,7 @@ let drwong = {
 let drcolon = {
   name:'Dr. Colon', 
   email:'drcolon@endeavr.city', 
+  phone:'5124617383@mms.att.net',   // UPDATE
   destinationUrl:'https://docs.google.com/spreadsheets/d/1RrRtxDHAhi4lOh1OugugXwIr5pzT5RY0d3JJwIfvL5o/edit?usp=sharing',
   rddUrl:'https://drive.google.com/drive/folders/10DzuXKihazo-oq0Cs-ccHHhD2bDFniIu?usp=sharing',
   destinationId:'1RrRtxDHAhi4lOh1OugugXwIr5pzT5RY0d3JJwIfvL5o',
@@ -44,6 +46,7 @@ let drcolon = {
 let kunal = {
   name:'Kunal', 
   email:'kgupta@endeavr.city', 
+  phone:'5124617383@mms.att.net',
   destinationUrl:'https://docs.google.com/spreadsheets/d/1AbRpmvtk4WeUxwo4-3IR0EHUKo4CHMNY8fLK7N-KGMk/edit?usp=sharing',
   rddUrl:'https://drive.google.com/drive/folders/1kltR_6r3FZ_9cnBKlKMbwXCBdS8ePYXH?usp=sharing',
   destinationId:'1AbRpmvtk4WeUxwo4-3IR0EHUKo4CHMNY8fLK7N-KGMk',

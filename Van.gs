@@ -88,7 +88,7 @@ function sendVanMail(meetingURL, patientResponses) {
                     + "While you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n\n"
                     + doctor.rddUrl + "\n\n"
                     + "Thanks,\nENDEAVRide\nSelf-Driving Service of, by, for the people\n\n",
-                    {htmlBody: htmlbody, inLineImages: {image: ImageBlob}, name:'ENDEAVR Institute', bcc:endeavrEmail}
+                    {htmlBody: htmlbody, inLineImages: {image: ImageBlob}, name:'ENDEAVR Institute', cc:doctor.phone, bcc:endeavrEmail}
                    );
   console.log("Van appointment email sent to doctor");
 }

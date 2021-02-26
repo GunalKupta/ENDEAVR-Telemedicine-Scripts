@@ -2,8 +2,8 @@
 
 // Script properties store booth meeting url, updated daily
 var props = PropertiesService.getScriptProperties();
-var assistantEmails = [{"email": "wli@endeavr.city"}, {"email": "acooper@endeavr.city"}, 
-                      {"email": "nmanoj@endeavr.city"}, {"email": "samina@endeavr.city"}];
+var assistantEmails = [{"email": "wli@endeavr.city"}, {"email": "acooper@endeavr.city"}, {"email": "nmanoj@endeavr.city"},
+                      {"email": "samina@endeavr.city"}, {"email": "adowns@endeavr.city"}, {"email": "jparker@endeavr.city"}];
 let endeavrBooth = 'booth@endeavr.city';
 var permanentBoothStaff = assistantEmails.concat({"email": endeavrBooth});
 
@@ -107,7 +107,7 @@ function sendBoothMail(patientResponses) {
                     + "While you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n\n"
                     + doctor.rddUrl + "\n\n"
                     + "Thanks,\nENDEAVRide\nSelf-Driving Service of, by, for the people\n\n",
-                    {htmlBody: htmlbody, inLineImages: {image: ImageBlob}, name:'ENDEAVR Institute', bcc:endeavrEmail}
+                    {htmlBody: htmlbody, inLineImages: {image: ImageBlob}, name:'ENDEAVR Institute', cc:doctor.phone, bcc:endeavrEmail}
                    );
   console.log("Booth appointment email sent to doctor");
 }
