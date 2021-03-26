@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<!-- This HTML template creates the web app that serves as a kiosk for patients in the ENDEAVR Booth. The webpage contains an image and a button that allows them to join the Meet call with a virtual assistant and prepare for their doctor's appointment. -->
+<!-- This HTML template creates the web app that serves as a kiosk for patients in the ENDEAVR Booth.
+The webpage contains an image and a button that allows them to join the Meet call with a virtual assistant
+and prepare for their doctor's appointment. -->
 <html>
   <head>
     <base target="_top">
@@ -48,7 +50,7 @@ I certify that I am sufficiently trained or prepared for participation in this a
 
     <script>
 
-      // opens Meet webpage once the url is returned from getMeetingUrl() function in Booth.gs
+      // opens Meet webpage once the url is returned from getBoothMeetingUrl() function in Booth.gs
       function onSuccess(url) {
         var a = document.createElement("a"); 
         a.href = url;
@@ -78,7 +80,7 @@ I certify that I am sufficiently trained or prepared for participation in this a
       }
 
       function openMeeting() {  
-        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).getMeetingUrl();
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).getBoothMeetingUrl();
       }
     </script>
   </body>

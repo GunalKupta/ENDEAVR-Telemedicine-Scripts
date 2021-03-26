@@ -25,7 +25,7 @@ let doctorSelectionColumn = 7; // Column H contains doctor selection
 let drwong = {
   name:'Dr. Wong', 
   email:'thwong@ihealth.clinic', 
-  phone:'4127760231@mms.att.net',   // UPDATE
+  phone:'5124617383@mms.att.net',   // UPDATE
   destinationUrl:'https://docs.google.com/spreadsheets/d/1_zoAkD7FvOGkiLZqOp4ghUd5xg5jIEZOZQoWr2GCl_U/edit?usp=sharing',
   rddUrl:'https://drive.google.com/drive/folders/1dG2oi6rOHJSZz1J8iiWGk1Z0VQFODWhH?usp=sharing',
   destinationId:'1_zoAkD7FvOGkiLZqOp4ghUd5xg5jIEZOZQoWr2GCl_U',
@@ -103,6 +103,8 @@ function chooseDoctor(selection) {
       doctor = drwong;
     } else if (selection.includes('Colon')) {
       doctor = drcolon;    
+    } else {
+      doctor = kunal;
     }
   }
 

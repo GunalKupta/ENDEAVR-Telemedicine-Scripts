@@ -3,7 +3,7 @@
 // Script properties store booth meeting url, updated daily
 var props = PropertiesService.getScriptProperties();
 var assistantEmails = [{"email": "wli@endeavr.city"}, {"email": "acooper@endeavr.city"}, {"email": "nmanoj@endeavr.city"},
-                      {"email": "samina@endeavr.city"}, {"email": "adowns@endeavr.city"}, {"email": "jparker@endeavr.city"}];
+                      {"email": "samina@endeavr.city"}, {"email": "adowns@endeavr.city"}, {"email": "asuarez@endeavr.city"}];
 let endeavrBooth = 'booth@endeavr.city';
 var permanentBoothStaff = assistantEmails.concat({"email": endeavrBooth});
 
@@ -14,7 +14,7 @@ function doGet() {
   return HtmlService.createHtmlOutputFromFile('Kiosk');
 }
 
-function getMeetingUrl() {
+function getBoothMeetingUrl() {
   // returns meeting URL for HTML kiosk
   var url = props.getProperty('meetingUrl');
   console.log("Returning meeting url: " + url)
