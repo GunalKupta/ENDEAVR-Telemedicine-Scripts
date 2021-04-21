@@ -24,7 +24,7 @@ function createMeeting(patientResponses) {
       "conferenceDataVersion": 1,
       "maxAttendees": 10,
       "sendUpdates": "all",
-      "summary": 'ENDEAVRide Telemedicine ' + patientResponses[1].substring(0,3).toUpperCase() + ' - ' + doctor.name,
+      "summary": 'ENDEAVRide Telemedicine ' + patientResponses[1].substring(0,3).toUpperCase() + ' - ' + doctor.getName(),
       "description": 'Telemedicine Visit with New ENDEAVRide Patient\nCheck email for more information.\n'
         + 'Patient Intake Data:\n' + doctor.destinationUrl
         + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n' + doctor.rddUrl,
@@ -77,10 +77,10 @@ function sendVanMail(meetingURL, patientResponses) {
   */
   let htmlbody = createVanHTMLBody(meetingURL, patientResponses);
 
-  var ImageBlob = UrlFetchApp.fetch("https://endeavr.city/wp-content/uploads/2020/03/ENDEAVRide-1024x234.png").getBlob().setName(ImageBlob);
+  var blob = UrlFetchApp.fetch("https://endeavr.city/wp-content/uploads/2020/03/ENDEAVRide-1024x234.png").getBlob();
 
-  GmailApp.sendEmail(doctor.email, "ENDEAVRide Van Telemedicine Appointment is Ready! (PHI Enclosed)",
-                    "Hello " + doctor.name + ",\n\n"
+  GmailApp.sendEmail(doctor.email, "ENDEAVRide Telemedicine Van Appointment is Ready! (PHI Enclosed)",
+                    "Hello " + doctor.getName() + ",\n\n"
                     + "An ENDEAVRide patient (" + patientResponses[1] + ") is waiting for your appointment to begin immediately. Please see the patient using the following link:\n\n"
                     + meetingURL + "\n\n"
                     + "Please visit the following link to access the patient’s intake form data including vital signs and symptom descriptions. Please make sure you are signed in to " + doctor.email + " in order to access it:\n\n"
@@ -88,7 +88,7 @@ function sendVanMail(meetingURL, patientResponses) {
                     + "While you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n\n"
                     + doctor.rddUrl + "\n\n"
                     + "Thanks,\nENDEAVRide\nSelf-Driving Service of, by, for the people\n\n",
-                    {htmlBody: htmlbody, inLineImages: {image: ImageBlob}, name:'ENDEAVR Institute', cc:doctor.phone, bcc:endeavrEmail}
+                    {htmlBody: htmlbody, inlineImages: {image: blob}, name:'ENDEAVR Institute', bcc:endeavrEmail}
                    );
   console.log("Van appointment email sent to doctor");
 }
@@ -98,7 +98,7 @@ function createVanHTMLBody(meetingURL, patientResponses) {
   // Creates a custom email with HTML formatting to send to the doctor to inform them that a patient is waiting
 
   var output = "<HTML><BODY><P style=\"font-family:'Times New Roman';font-size:18px\">"
-  + "Hello " + doctor.name + ",<BR><BR>"
+  + "Hello " + doctor.getName() + ",<BR><BR>"
   + "An ENDEAVRide patient (<B>" + patientResponses[1] + "</B>) is waiting for your appointment to begin <B><U>immediately</U></B>. Please see the patient using the following link:<BR><BR>"
   + "<A target=_blank href=\"" + meetingURL + "\">" + meetingURL + "</A><BR><BR>"
   + "Please visit the following link to access the <B>patient’s intake form data</B> including vital signs and symptom descriptions. Please make sure you are signed in to <B>" + doctor.email + "</B> in order to access it:<BR><BR>"
@@ -106,9 +106,7 @@ function createVanHTMLBody(meetingURL, patientResponses) {
   + "While you are seeing the patient, you can perform <B>remote diagnostics</B> using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:<BR><BR>"
   + "<A target=_blank href=\"" + doctor.rddUrl + "\">" + doctor.rddUrl + "</A><BR><BR>"
   + "If you run into any problems, please call 1-844-ENDEAVR (363-3287).<BR><BR>"
-  + "Thanks,<BR>ENDEAVRide<BR>Self-Driving Service of, by, for the people<BR><BR>"
-  + '<img src="cid:image">'
-  + "</P></BODY></HTML>";
+  + htmlEmailSignature + "</P></BODY></HTML>";
 
   return output;
 }
