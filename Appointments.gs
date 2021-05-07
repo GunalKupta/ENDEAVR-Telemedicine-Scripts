@@ -1,6 +1,5 @@
 let boothappointment_calendarid = "c_eitg0t8o7nl6ikhqv1a2asa6jk@group.calendar.google.com";
 let vanappointment_calendarid = "c_0t3a67ff4jt3rksnatquk2brc0@group.calendar.google.com";
-let setmore_calendarid = "ovhe7ntmchfk2ar23ng9hidinmps76sm@import.calendar.google.com";
 
 class Appointment {
   constructor(type, dr, patientName, patientPhone, event, meetUrl) {
