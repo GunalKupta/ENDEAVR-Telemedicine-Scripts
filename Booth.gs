@@ -44,7 +44,7 @@ function createBoothMeeting() {
       "conferenceDataVersion": 1,
       "maxAttendees": 10,
       "summary": 'ENDEAVRide Telemedicine Booth - ' + d.toLocaleDateString(),
-      "description": 'All Telemedicine Visits on this day for ENDEAVRide Patients in the Booth will occur through this Meet call'
+      "description": 'All Telemedicine Visits on this day for ENDEAVRide Patients in the Booth will occur through this Meet call.'
         + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed during the session from your RDD Folder.\nSee email for more details.',
       "end": {
         "dateTime": end,  

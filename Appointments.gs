@@ -3,10 +3,11 @@ let vanappointment_calendarid = "c_0t3a67ff4jt3rksnatquk2brc0@group.calendar.goo
 let setmore_calendarid = "ovhe7ntmchfk2ar23ng9hidinmps76sm@import.calendar.google.com";
 
 class Appointment {
-  constructor(type, dr, patientName, event, meetUrl) {
+  constructor(type, dr, patientName, patientPhone, event, meetUrl) {
     this.type = type;
     this.doctor = dr;   // class Doctor
     this.patient = patientName
+    this.patientPhone = patientPhone;
     this.event = event; // class CalendarEvent
     this.url = meetUrl;
   }
@@ -23,6 +24,7 @@ class Appointment {
     out += weekday[this.getDate().getDay()] + ", " + month[this.getDate().getMonth()] + " " + this.getDate().getDate();
     out += " at <B>" + this.getDate().toTimeString() + "</B> " + "(" + this.getDate().toLocaleTimeString() + " Texas time).<BR>";
     out += "Patient: " + this.patient + "<BR>";
+    out += (this.patientPhone == null) ? "" : "Patient Phone #: " + this.patientPhone + "<BR>";
     out += "Link to join: <A target=_blank href=\"" + this.url + "\">" + this.url + "</A><BR>";
     return out;
   }
@@ -32,6 +34,7 @@ class Appointment {
     out += weekday[this.getDate().getDay()] + ", " + month[this.getDate().getMonth()] + " " + this.getDate().getDate();
     out += " at " + this.getDate().toTimeString() + " (" + this.getDate().toLocaleTimeString() + " Texas time).\n";
     out += "Patient: " + this.patient + "\n";
+    out += (this.patientPhone == null) ? "" : "Patient Phone #: " + this.patientPhone + "\n";
     out += "Link to join: " + this.url + "\n";
     return out;
   }
@@ -39,11 +42,11 @@ class Appointment {
 
 function inDrList(drEmail, drsList) {
   var out = false; 
-  Logger.log("Checking Dr List");
+  // Logger.log("Checking Dr List");
   drsList.forEach(function(dr) {
     // Logger.log(dr.name);
     if (dr.email == drEmail) {
-      Logger.log("Found " + drEmail + " in Dr list");
+      // Logger.log("Found " + drEmail + " in Dr list");
       out = true;
     }
   });
@@ -52,7 +55,7 @@ function inDrList(drEmail, drsList) {
 
 function updateAppointmentsForDay() {
   var today = new Date();
-  today.setTime(today.getTime() + (1*60*60*1000));
+  today.setTime(today.getTime() + (1*60*60*1000));  // multiply by num hours to add when testing
   var appointmentsList = [];
   var doctorsList = [];
 
@@ -66,12 +69,13 @@ function updateAppointmentsForDay() {
   boothMeetingLabel = boothMeetingUrl.substring(8);
   var count = 0;
 
-  boothAppointmentsForDay.forEach(function(appointment) {
+  boothAppointmentsForDay.filter(a => a.getTitle().search("For Telemedicine Appointment") > 0).forEach(function(appointment) {
     
     var appointmentTitle = appointment.getTitle();
 
     var dr = getDoctorFromEvent(appointment);
-    var patient = getPatientFromEvent(appointment);
+    var patient = getPatientNameFromEvent(appointment);
+    var patientPhone = getPatientPhoneFromEvent(appointment);
 
     // chooseDoctor(appointmentTitle);
     // var rddFolder = DriveApp.getFileById(doctor.rddId);
@@ -116,7 +120,7 @@ function updateAppointmentsForDay() {
       // "attachments":[
       //   {fileId: doctor.rddId, fileUrl: rddFolder.getUrl(), mimeType: rddFolder.getMimeType(), title: rddFolder.getName()}
       // ]
-      "attendees": permanentBoothStaff.concat({"email": dr.email})
+      "attendees": /*permanentBoothStaff.concat*/[{"email": dr.email}]
     }
 
 
@@ -128,14 +132,14 @@ function updateAppointmentsForDay() {
 
         //CalendarApp.getCalendarById('primary').getEventById(appointment.getId()).deleteEvent();
         // Logger.log(boothCal.getName() + '\n' + boothCal.getEventById(response.id).getTitle());
-        appointmentsList.push(new Appointment("Booth", dr, patient, boothCal.getEventById(response.id), boothMeetingUrl));
+        appointmentsList.push(new Appointment("Booth", dr, patient, patientPhone,boothCal.getEventById(response.id), boothMeetingUrl));
         if (!inDrList(dr.email, doctorsList)) {
-          Logger.log("Pushing " + dr.name + " to doctorsList");
+          // Logger.log("Pushing " + dr.name + " to doctorsList");
           doctorsList.push(dr);
         } else {
-          Logger.log("Not pushing " + dr.email + " to doctorsList");
+          // Logger.log("Not pushing " + dr.email + " to doctorsList");
         }
-        appointment.deleteEvent();
+        // appointment.deleteEvent();
     } catch(e) {
         console.log(`Oh no: ${e.message}`)
     }
@@ -227,8 +231,6 @@ function updateAppointmentsForDay() {
 */
   console.log(appointmentsList.length + " appointments for today");
 
-  // TODO: Send emails to doctors
-
   sendAppointmentEmails(doctorsList, appointmentsList);
 }
 
@@ -237,7 +239,7 @@ function sendAppointmentEmails(doctors, appointments) {
   var d = new Date().toLocaleDateString();
   doctors.forEach(function(doctor) {
     var htmlbody = createAppointmentHTMLBody(doctor, appointments);
-    Logger.log("Sending appointment email to:\n" + doctor.email);
+    // Logger.log("Sending appointment email to:\n" + doctor.email);
     GmailApp.sendEmail(doctor.email, "ENDEAVR Telemedicine Appointments for " + d + " (PHI Enclosed)",
       createAppointmentTXTBody(doctor, appointments),
       {htmlBody: htmlbody, inlineImages: {image: blob}, name:'ENDEAVR Institute', cc:boothStaffGroup, bcc:endeavrEmail}
@@ -287,18 +289,34 @@ function getTXTAppointmentsForDoctor(dr, appointments) {
   return out;
 }
 
-function getPatientFromEvent(event) {
+function getPatientNameFromEvent(event) {
   var desc = event.getDescription();
-  var patient = desc.substring(desc.indexOf('Patient Name: ')+14/*, desc.indexOf('Patient Phone #: ')-2*/);
-  Logger.log('Patient = ' + patient);
+  var patient;
+  if (desc.search("Patient Phone #: ") == -1)
+    patient = desc.substring(desc.indexOf('Patient Name: ')+14);
+  else
+    patient = desc.substring(desc.indexOf('Patient Name: ')+14, desc.indexOf('Patient Phone #: ')-1);
+  // Logger.log('Patient = ' + patient);
   return patient;
+}
+
+function getPatientPhoneFromEvent(event) {
+  var desc = event.getDescription();
+  var patientNum;
+  if (desc.search("Patient Phone #: ") == -1) {
+    // Logger.log('Patient Phone not provided');
+    return null;
+  }
+  patientNum = desc.substring(desc.indexOf('Patient Phone #: ')+17);
+  // Logger.log('Patient Phone = ' + patientNum);
+  return patientNum;
 }
 
 function getDoctorFromEvent(event) {
   var desc = event.getDescription();
 
   var email = desc.substring(desc.indexOf('EMAIL: ')+7, desc.indexOf('MOBILE: ')-1);
-  var name = event.getTitle().substring(0, event.getTitle().indexOf('For Telemedicine Appointment')-1);
+  var name = event.getTitle().substring(0, event.getTitle().indexOf('For Telemedicine Appointment')-1).trim();
   console.log(name + '\n' + email);
 
   return new Doctor(name, email);
