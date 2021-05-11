@@ -43,9 +43,9 @@ function createBoothMeeting() {
       "calendarId": calendarId,
       "conferenceDataVersion": 1,
       "maxAttendees": 10,
-      "summary": 'ENDEAVRide Telemedicine Booth - ' + d.toLocaleDateString(),
-      "description": 'All Telemedicine Visits on this day for ENDEAVRide Patients in the Booth will occur through this Meet call.'
-        + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed during the session from your RDD Folder.\nSee email for more details.',
+      "summary": 'ENDEAVR Telemedicine Booth - ' + d.toLocaleDateString(),
+      "description": 'All Telemedicine Visits on this day for ENDEAVR Patients in the Booth will occur through this Meet call.'
+        + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVR devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed during the session from your RDD Folder.\nSee email for more details.',
       "end": {
         "dateTime": end,  
         "timeZone": "America/Chicago"
@@ -109,7 +109,7 @@ function sendBoothMail(patientResponses) {
                     + "While you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n\n"
                     + doctor.rddUrl + "\n\n"
                     + "Thanks,\nENDEAVRide\nSelf-Driving Service of, by, for the people\n\n",
-                    {htmlBody: htmlbody, inlineImages: {image: blob}, name:'ENDEAVR Institute', bcc:endeavrEmail+","+emailsToCSV(permanentBoothStaff)}
+                    {htmlBody: htmlbody, inlineImages: {image: blob}, name:'ENDEAVR Institute', bcc:boothStaffGroup}
                    );
   console.log("Booth appointment email sent to doctor");
 }
@@ -124,7 +124,7 @@ function createBoothHTMLBody(meetingURL, patientResponses) {
   + "<A target=_blank href=\"" + meetingURL + "\">" + meetingURL + "</A><BR><BR>"
   + "Please visit the following link to access the <B>patient’s intake form data</B> including vital signs and symptom descriptions. Please make sure you are signed in to <B>" + doctor.email + "</B> in order to access it:<BR><BR>"
   + "<A target=_blank href=\"" + doctor.destinationUrl + "\">" + doctor.destinationUrl + "</A><BR><BR>"
-  + "While you are seeing the patient, you can perform <B>remote diagnostics</B> using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:<BR><BR>"
+  + "While you are seeing the patient, you can perform <B>remote diagnostics</B> using ENDEAVR devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:<BR><BR>"
   + "<A target=_blank href=\"" + doctor.rddUrl + "\">" + doctor.rddUrl + "</A><BR><BR>"
   + "If you run into any problems, please call 1-844-ENDEAVR (363-3287).<BR><BR>"
   + htmlEmailSignature + "</P></BODY></HTML>";

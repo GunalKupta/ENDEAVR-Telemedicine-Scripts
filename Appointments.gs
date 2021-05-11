@@ -1,5 +1,6 @@
 let boothappointment_calendarid = "c_eitg0t8o7nl6ikhqv1a2asa6jk@group.calendar.google.com";
 let vanappointment_calendarid = "c_0t3a67ff4jt3rksnatquk2brc0@group.calendar.google.com";
+var appointmentsSheet = SpreadsheetApp.openById("1DBZnKAFiB8MJy_e5h-M83ZauUhJeXBmSjAGBKq6owas").getActiveSheet();
 
 class Appointment {
   constructor(type, dr, patientName, patientPhone, event, meetUrl) {
@@ -231,6 +232,21 @@ function updateAppointmentsForDay() {
   console.log(appointmentsList.length + " appointments for today");
 
   sendAppointmentEmails(doctorsList, appointmentsList);
+  addAppointmentsToSheet(appointmentsList);
+}
+
+function addAppointmentsToSheet(appointments) {
+  var n = appointments.length;
+  var cols = 7;
+  appointmentsSheet.insertRowsAfter(1, n);
+  var values = [];
+  appointments.forEach(function(appointment) {
+    values.unshift([appointment.event.getStartTime(), appointment.type, appointment.doctor.name, appointment.doctor.email, 
+                  appointment.patient, (appointment.patientPhone ? appointment.patientPhone : ""), appointment.url]);
+  })
+  var dest = appointmentsSheet.getRange(2, 1, n, cols);
+  dest.setValues(values);
+  console.log("Added " + n + " appointments to spreadsheet");
 }
 
 function sendAppointmentEmails(doctors, appointments) {
@@ -241,9 +257,10 @@ function sendAppointmentEmails(doctors, appointments) {
     // Logger.log("Sending appointment email to:\n" + doctor.email);
     GmailApp.sendEmail(doctor.email, "ENDEAVR Telemedicine Appointments for " + d + " (PHI Enclosed)",
       createAppointmentTXTBody(doctor, appointments),
-      {htmlBody: htmlbody, inlineImages: {image: blob}, name:'ENDEAVR Institute', cc:boothStaffGroup, bcc:endeavrEmail}
+      {htmlBody: htmlbody, inlineImages: {image: blob}, name:'ENDEAVR Institute', bcc:boothStaffGroup}
     );
   })
+  console.log("Appointment emails sent to doctor");
 }
 
 function createAppointmentHTMLBody(doctor, appointments) {

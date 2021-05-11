@@ -143,14 +143,15 @@ function copyData() {
   var sourceRange = ss.getActiveSheet().getActiveRange();
   var sourceValues = sourceRange.getValues();
 
-  var numValues = sourceValues[0].length;
+  // var numValues = sourceValues[0].length;
 
   let destination = SpreadsheetApp.openByUrl(doctor.destinationUrl).getActiveSheet();
-  var last_row = destination.getLastRow();
-  destination.insertRowAfter(last_row);
-  let destRange = destination.getRange(last_row+1,1,1,numValues);
+  // var last_row = destination.getLastRow();
+  // destination.insertRowAfter(last_row);
+  // let destRange = destination.getRange(last_row+1,1,1,numValues);
+  // destRange.setValues(sourceValues);
 
-  destRange.setValues(sourceValues);
+  destination.appendRow(sourceValues[0]);
 
   console.log('Data copied into sheet shared with ' + doctor.getName());
 }
