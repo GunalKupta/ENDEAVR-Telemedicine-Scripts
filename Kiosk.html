@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- This HTML template creates the web app that serves as a kiosk for patients in the ENDEAVR Booth.
 The webpage contains an image and a button that allows them to join the Meet call with a virtual assistant
-and prepare for their doctor's appointment. -->
+and prepare for their doctor's appointment. The webpage also contains a disclaimer -->
 <html>
   <head>
     <base target="_top">
@@ -28,6 +28,12 @@ and prepare for their doctor's appointment. -->
          -ms-transform: translate(-50%, -80%);
          transform: translate(-50%, -80%);
        }
+       #startButton {
+         color: white;
+         background-color: #0291CC;
+         padding: 150px 75px;
+         font-size: 100px
+       }
      </style>
   </head>
   <body>
@@ -37,7 +43,7 @@ and prepare for their doctor's appointment. -->
      </div>
     <br><br><br>
     <div class="vertical-center">
-      <button id="startButton" style="color:white;background-color:#0291CC;padding:150px 75px;font-size:100px" onclick="openMeeting()">
+      <button id="startButton" onclick="openMeeting()">
         <b>START</b>
       </button>
     </div>
@@ -50,8 +56,13 @@ I certify that I am sufficiently trained or prepared for participation in this a
 
     <script>
 
-      // opens Meet webpage once the url is returned from getBoothMeetingUrl() function in Booth.gs
+      function openMeeting() {
+        // on button press, get today's booth meeting URL using the getBoothMeetingUrl() function in Booth.gs
+        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).getBoothMeetingUrl();
+      }
+
       function onSuccess(url) {
+        // opens Meet webpage once the url is returned successfully in openMeeting()
         var a = document.createElement("a"); 
         a.href = url;
         a.target = "_blank";
@@ -79,9 +90,6 @@ I certify that I am sufficiently trained or prepared for participation in this a
         div.innerHtml = "Failure to open automatically: " + link;
       }
 
-      function openMeeting() {  
-        google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).getBoothMeetingUrl();
-      }
     </script>
   </body>
 </html>

@@ -2,6 +2,7 @@
 
 function createMeeting(patientResponses) {
   // Create a new Google Meet for patient and doctor to have an appointment in the van
+
   var d = new Date();
   
   console.log("creating new Van meeting " + d);
@@ -24,7 +25,7 @@ function createMeeting(patientResponses) {
       "conferenceDataVersion": 1,
       "maxAttendees": 10,
       "sendUpdates": "all",
-      "summary": 'ENDEAVRide Telemedicine ' + patientResponses[1].substring(0,3).toUpperCase() + ' - ' + doctor.getName(),
+      "summary": 'ENDEAVRide Telemedicine ' + patientResponses[1].trim().substring(0,3).toUpperCase() + ' - ' + doctor.getName(),
       "description": 'Telemedicine Visit with New ENDEAVRide Patient\nCheck email for more information.\n'
         + 'Patient Intake Data:\n' + doctor.destinationUrl
         + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n' + doctor.rddUrl,
@@ -99,7 +100,7 @@ function createVanHTMLBody(meetingURL, patientResponses) {
 
   var output = "<HTML><BODY><P style=\"font-family:'Times New Roman';font-size:18px\">"
   + "Hello " + doctor.getName() + ",<BR><BR>"
-  + "An ENDEAVRide patient (<B>" + patientResponses[1] + "</B>) is waiting for your appointment to begin <B><U>immediately</U></B>. Please see the patient using the following link:<BR><BR>"
+  + "An ENDEAVRide patient (<B>" + patientResponses[1].trim() + "</B>) is waiting for your appointment to begin <B><U>immediately</U></B>. Please see the patient using the following link:<BR><BR>"
   + "<A target=_blank href=\"" + meetingURL + "\">" + meetingURL + "</A><BR><BR>"
   + "Please visit the following link to access the <B>patient’s intake form data</B> including vital signs and symptom descriptions. Please make sure you are signed in to <B>" + doctor.email + "</B> in order to access it:<BR><BR>"
   + "<A target=_blank href=\"" + doctor.destinationUrl + "\">" + doctor.destinationUrl + "</A><BR><BR>"

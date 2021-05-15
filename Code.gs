@@ -1,5 +1,5 @@
 /*
-This script was created by Kunal Gupta for ENDEAVR and its subsidiary ENDEAVRide,
+These scripts were created by Kunal Gupta for ENDEAVR and its subsidiary ENDEAVRide,
 to automate the telemedicine process for users of the autonomous telemedicine van
 and telemedicine booth located in Nolanville, TX.
 */
@@ -14,20 +14,12 @@ L-N: Medications and Kidney/Liver
 O-W: Problems
 */
 
-// thwong@ihealth.clinic
-// drcolon@killeenneurocenter.com
-// drcolon@endeavr.city
-// kgupta@endeavr.city
-
-let doctorSelectionColumn = 7; // Column H contains doctor selection
-
-var allDoctors = [];
+let doctorSelectionColumn = 7; // Column H contains the name of the selected doctor
 
 class Doctor {
   constructor(name, email) {
     this.name = name;
     this.email = email;
-    allDoctors.push(this);
   }
 
   getName() {
@@ -42,44 +34,18 @@ class EndeavrDoctor extends Doctor {
   }
 }
 
-// Doctor classes
-let drwong = new EndeavrDoctor({
-  name:'Timothy Wong', 
-  email:'thwong@ihealth.clinic', 
-  destinationUrl:'https://docs.google.com/spreadsheets/d/1_zoAkD7FvOGkiLZqOp4ghUd5xg5jIEZOZQoWr2GCl_U/edit?usp=sharing',
-  rddUrl:'https://drive.google.com/drive/folders/1dG2oi6rOHJSZz1J8iiWGk1Z0VQFODWhH?usp=sharing',
-  destinationId:'1_zoAkD7FvOGkiLZqOp4ghUd5xg5jIEZOZQoWr2GCl_U',
-  rddId:'1dG2oi6rOHJSZz1J8iiWGk1Z0VQFODWhH'
-  });
-
-let drcolon = new EndeavrDoctor({
-  name:'Hector Colon', 
-  email:'drcolon@endeavr.city', 
-  destinationUrl:'https://docs.google.com/spreadsheets/d/1RrRtxDHAhi4lOh1OugugXwIr5pzT5RY0d3JJwIfvL5o/edit?usp=sharing',
-  rddUrl:'https://drive.google.com/drive/folders/10DzuXKihazo-oq0Cs-ccHHhD2bDFniIu?usp=sharing',
-  destinationId:'1RrRtxDHAhi4lOh1OugugXwIr5pzT5RY0d3JJwIfvL5o',
-  rddId:'10DzuXKihazo-oq0Cs-ccHHhD2bDFniIu'
-  });
-
-// Default doctor value for testing
-let kunal = new EndeavrDoctor({
-  name:'Kunal Gupta', 
-  email:'kgupta@endeavr.city', 
-  destinationUrl:'https://docs.google.com/spreadsheets/d/1AbRpmvtk4WeUxwo4-3IR0EHUKo4CHMNY8fLK7N-KGMk/edit?usp=sharing',
-  rddUrl:'https://drive.google.com/drive/folders/1kltR_6r3FZ_9cnBKlKMbwXCBdS8ePYXH?usp=sharing',
-  destinationId:'1AbRpmvtk4WeUxwo4-3IR0EHUKo4CHMNY8fLK7N-KGMk',
-  rddId:'1kltR_6r3FZ_9cnBKlKMbwXCBdS8ePYXH'
-  });
-
+// Doctor objects - defined in Doctor.gs
+// const drwong
+// const drcolon
+// const kunal
+// var doctor = kunal;
 
 let endeavrEmail = 'ride@endeavr.city';
 let endeavrPatient = 'patient@endeavr.city';
 
-var doctor = kunal;
-
 var htmlEmailSignature = "Thank you for your service!<BR>ENDEAVR Telemedicine Team<BR>" + '<A href="https://endeavr.city" target="_blank"><img src="cid:image" style=\'width:280px\'></A><BR>'
 
-var ss = SpreadsheetApp.getActiveSpreadsheet();
+var ss = SpreadsheetApp.getActiveSpreadsheet(); // Patient Intake - Master
 
 function onFormSubmit(e){
   Utilities.sleep(1000);
@@ -105,11 +71,11 @@ function onFormSubmit(e){
   var meetingUrl;
 
   if (sheetName == 'Van Patients') {
-    meetingUrl = createMeeting(values);
+    meetingUrl = createMeeting(values);   // create new Meet and share with doctor
     sendVanMail(meetingUrl, values);
   }
   else if (sheetName == 'Booth Patients') {
-    addDoctorToBooth();
+    addDoctorToBooth();     // add doctor to existing booth Meeting
     sendBoothMail(values);
   }
   else {
@@ -156,28 +122,6 @@ function copyData() {
   console.log('Data copied into sheet shared with ' + doctor.getName());
 }
 
-var weekday=new Array(7);
-weekday[0]="Sunday";
-weekday[1]="Monday";
-weekday[2]="Tuesday";
-weekday[3]="Wednesday";
-weekday[4]="Thursday";
-weekday[5]="Friday";
-weekday[6]="Saturday";
-
-var month=new Array(12);
-month[0]="January";
-month[1]="February";
-month[2]="March";
-month[3]="April";
-month[4]="May";
-month[5]="June";
-month[6]="July";
-month[7]="August";
-month[8]="September";
-month[9]="October";
-month[10]="November";
-month[11]="December";
 
 
 

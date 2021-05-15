@@ -6,8 +6,8 @@ var assistantEmails = [{"email": "wli@endeavr.city"}, {"email": "acooper@endeavr
                       {"email": "adowns@endeavr.city"}, {"email": "asuarez@endeavr.city"}, {"email": "kgupta@endeavr.city"}];
 let endeavrBooth = 'booth@endeavr.city';
 // var permanentBoothStaff = assistantEmails.concat({"email": endeavrBooth});
-var boothStaffGroup = "booth-operators@endeavr.city";
-var permanentBoothStaff = [{"email": "booth-operators@endeavr.city"}]
+var boothStaffGroup = ""//"booth-operators@endeavr.city";
+var permanentBoothStaff = [{"email": boothStaffGroup}] // used for building calendar event (needs array of JSON objects)
 
 let calendarId = 'primary';
 
@@ -17,7 +17,8 @@ function doGet() {
 }
 
 function getBoothMeetingUrl() {
-  // returns meeting URL for HTML kiosk
+  // returns meeting URL for HTML kiosk in Kiosk.html
+
   var url = props.getProperty('meetingUrl');
   console.log("Returning meeting url: " + url)
   return url;
@@ -25,10 +26,13 @@ function getBoothMeetingUrl() {
 
 function createBoothMeeting() {
   // Runs automatically every morning, creating a new meeting URL each day for security
+  // and attaching to a new booth calendar event
+
   var d = new Date();
   
   console.log("creating new Booth meeting " + d);
 
+  // Create calendar event from 6am to 6pm
   var startDate = new Date(d.toLocaleDateString());
   startDate.setHours(6);
   var start = startDate.toJSON(); // date readable by Google Calendar
@@ -38,7 +42,7 @@ function createBoothMeeting() {
   var end = endDate.toJSON();
 
   try {
-    
+    // build calendar event
     var payload = {
       "calendarId": calendarId,
       "conferenceDataVersion": 1,
@@ -59,7 +63,7 @@ function createBoothMeeting() {
           "conferenceSolutionKey": {
             "type": "hangoutsMeet"
           },
-          "requestId": "req" + d    //this needs to be unique on every request!
+          "requestId": "req" + d    //this needs to be unique on every request
         }
       },
       "transparency": "transparent",
@@ -85,12 +89,15 @@ function createBoothMeeting() {
 }
 
 function addDoctorToBooth() {
-  // Add doctor's email as a guest to the booth Meet call whenever a booth patient requests that doctor
+  // Add doctor's email as a guest to the booth Meet call whenever a booth patient requests that doctor in the form
+  // ALTERNATIVE METHOD FOR FUTURE: Create new event just for doctor and add Booth Meet link to that event
+  // similar to method in Appointments.gs
+
   console.log("Adding " + doctor.getName() + " to Booth Meet");
   var newAttendees = permanentBoothStaff.concat({"email": doctor.email});
   var resource = { attendees: newAttendees };
   Calendar.Events.patch(resource, calendarId, props.getProperty('eventId'));
-  // console.log("New Booth attendees: " + Calendar.Events.get(calendarId, props.getProperty('eventId')).attendees);
+  console.log("New Booth attendees: " + Calendar.Events.get(calendarId, props.getProperty('eventId')).attendees);
 }
 
 function sendBoothMail(patientResponses) {
@@ -117,10 +124,11 @@ function sendBoothMail(patientResponses) {
 
 function createBoothHTMLBody(meetingURL, patientResponses) {
   // Creates a custom email with HTML formatting to send to the doctor to inform them that a patient is waiting
+  // for them, and provide a link to join
 
   var output = "<HTML><BODY><P style=\"font-family:'Times New Roman';font-size:18px\">"
   + "Hello " + doctor.getName() + ",<BR><BR>"
-  + "An ENDEAVR Booth patient (<B>" + patientResponses[1] + "</B>) is waiting for your appointment to begin <B><U>immediately</U></B>. Please see the patient using the following link:<BR><BR>"
+  + "An ENDEAVR Booth patient (<B>" + patientResponses[1].trim() + "</B>) is waiting for your appointment to begin <B><U>immediately</U></B>. Please see the patient using the following link:<BR><BR>"
   + "<A target=_blank href=\"" + meetingURL + "\">" + meetingURL + "</A><BR><BR>"
   + "Please visit the following link to access the <B>patient’s intake form data</B> including vital signs and symptom descriptions. Please make sure you are signed in to <B>" + doctor.email + "</B> in order to access it:<BR><BR>"
   + "<A target=_blank href=\"" + doctor.destinationUrl + "\">" + doctor.destinationUrl + "</A><BR><BR>"
@@ -132,12 +140,4 @@ function createBoothHTMLBody(meetingURL, patientResponses) {
   return output;
 }
 
-function emailsToCSV(emails) {
-  var out = "";
-  emails.forEach(function(email) {
-    out += email.email + ',';
-  })
-  Logger.log(out);
-  return out.substr(0, out.length-1);
-}
 
