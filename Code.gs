@@ -84,7 +84,7 @@ function onFormSubmit(e){
     sendVanMail(meetingUrl, values);
   }
   else if (sheetName == 'Booth Patients') {
-    addDoctorToBooth();     // add doctor to existing booth Meeting
+    createBoothMeetingForDoctor(values);  // create new event with existing Meet link and share with doctor
     sendBoothMail(values);
   }
   else {
