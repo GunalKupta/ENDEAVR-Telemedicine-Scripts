@@ -23,6 +23,7 @@ class Doctor {
   }
 
   getName() {
+    // Returns doctor's last name with "Dr. " prefix
     var words = this.name.split(' ');
     return "Dr. " + words[words.length-1];
   }
@@ -31,18 +32,26 @@ class EndeavrDoctor extends Doctor {
   constructor(obj) {
     super(obj.name, obj.email);
     Object.assign(this, obj);
+    /*
+    destinationUrl,
+    rddUrl,
+    destinationId,
+    rddId
+    */
   }
 }
 
-// Doctor objects - defined in Doctor.gs
+// Doctor objects - defined in Doctors.gs
 // const drwong
 // const drcolon
 // const kunal
 // var doctor = kunal;
+// doctor is a global variable used to store the selected doctor
 
 let endeavrEmail = 'ride@endeavr.city';
 let endeavrPatient = 'patient@endeavr.city';
 
+// email signature used in emails sent to doctors, containing HTML formatting for logo image
 var htmlEmailSignature = "Thank you for your service!<BR>ENDEAVR Telemedicine Team<BR>" + '<A href="https://endeavr.city" target="_blank"><img src="cid:image" style=\'width:280px\'></A><BR>'
 
 var ss = SpreadsheetApp.getActiveSpreadsheet(); // Patient Intake - Master
@@ -65,11 +74,11 @@ function onFormSubmit(e){
   if (!doctor) {
     throw "No doctor selected";
   }
+  
   copyData();
 
-  var sheetName = ss.getActiveSheet().getName();
+  var sheetName = ss.getActiveSheet().getName(); // Active sheet is the sheet that form responses were sent to
   var meetingUrl;
-
   if (sheetName == 'Van Patients') {
     meetingUrl = createMeeting(values);   // create new Meet and share with doctor
     sendVanMail(meetingUrl, values);
@@ -86,7 +95,7 @@ function onFormSubmit(e){
 }
 
 function chooseDoctor(selection) {
-  // sets doctor variable to appropriate doctor depending on selection made in values[3]
+  // sets global doctor variable to appropriate doctor depending on selection made in values[3]
 
   if (selection) {
     if (selection.includes('Wong')) {
@@ -104,18 +113,12 @@ function chooseDoctor(selection) {
 }
 
 function copyData() {
-  // Copies the most recently submitted data into separate spreadsheet shared with appropriate doctor
+  // Copies the most recently submitted form data into separate spreadsheet shared with appropriate doctor
 
   var sourceRange = ss.getActiveSheet().getActiveRange();
   var sourceValues = sourceRange.getValues();
 
-  // var numValues = sourceValues[0].length;
-
   let destination = SpreadsheetApp.openByUrl(doctor.destinationUrl).getActiveSheet();
-  // var last_row = destination.getLastRow();
-  // destination.insertRowAfter(last_row);
-  // let destRange = destination.getRange(last_row+1,1,1,numValues);
-  // destRange.setValues(sourceValues);
 
   destination.appendRow(sourceValues[0]);
 

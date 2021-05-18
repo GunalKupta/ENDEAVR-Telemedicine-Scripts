@@ -6,7 +6,7 @@ var assistantEmails = [{"email": "wli@endeavr.city"}, {"email": "acooper@endeavr
                       {"email": "adowns@endeavr.city"}, {"email": "asuarez@endeavr.city"}, {"email": "kgupta@endeavr.city"}];
 let endeavrBooth = 'booth@endeavr.city';
 // var permanentBoothStaff = assistantEmails.concat({"email": endeavrBooth});
-var boothStaffGroup = ""//"booth-operators@endeavr.city";
+var boothStaffGroup = "booth-operators@endeavr.city";
 var permanentBoothStaff = [{"email": boothStaffGroup}] // used for building calendar event (needs array of JSON objects)
 
 let calendarId = 'primary';
@@ -109,7 +109,7 @@ function sendBoothMail(patientResponses) {
 
   GmailApp.sendEmail(doctor.email, "ENDEAVR Telemedicine Booth Appointment is Ready! (PHI Enclosed)",
                     "Hello " + doctor.getName() + ",\n\n"
-                    + "An ENDEAVR patient (" + patientResponses[1] + ") is waiting for your appointment to begin immediately. Please see the patient using the following link:\n\n"
+                    + "An ENDEAVR patient (" + patientResponses[1].trim() + ") is waiting for your appointment to begin immediately. Please see the patient using the following link:\n\n"
                     + meetingURL + "\n\n"
                     + "Please visit the following link to access the patient’s intake form data including vital signs and symptom descriptions. Please make sure you are signed in to " + doctor.email + " in order to access it:\n\n"
                     + doctor.destinationUrl + "\n\n"

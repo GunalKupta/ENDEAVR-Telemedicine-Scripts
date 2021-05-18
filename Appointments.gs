@@ -346,7 +346,7 @@ function getPatientPhoneFromEvent(event) {
     // Logger.log('Patient Phone not provided');
     return null;
   }
-  patientNum = desc.substring(desc.indexOf('Patient Phone #: ')+17);
+  patientNum = desc.substring(desc.indexOf('Patient Phone #: ')+17).trim();
   // Logger.log('Patient Phone = ' + patientNum);
   return patientNum;
 }
@@ -355,7 +355,7 @@ function getDoctorFromEvent(event) {
   // Find the doctor associated with an appointment event to include in the Appointment object
   var desc = event.getDescription();
 
-  var email = desc.substring(desc.indexOf('EMAIL: ')+7, desc.indexOf('MOBILE: ')-1);
+  var email = desc.substring(desc.indexOf('EMAIL: ')+7, desc.indexOf('MOBILE: ')-1).trim();
   var name = event.getTitle().substring(0, event.getTitle().indexOf('For Telemedicine Appointment')-1).trim();
   console.log(name + '\n' + email);
 
