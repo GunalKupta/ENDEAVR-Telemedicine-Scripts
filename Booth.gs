@@ -88,26 +88,15 @@ function createBoothMeeting() {
   }
 }
 
-// function addDoctorToBooth() {
-//   // Add doctor's email as a guest to the booth Meet call whenever a booth patient requests that doctor in the form
-//   // ALTERNATIVE METHOD FOR FUTURE: Create new event just for doctor and add Booth Meet link to that event
-//   // similar to method in Appointments.gs
-
-//   console.log("Adding " + doctor.getName() + " to Booth Meet");
-//   var newAttendees = permanentBoothStaff.concat({"email": doctor.email});
-//   var resource = { attendees: newAttendees };
-//   Calendar.Events.patch(resource, calendarId, props.getProperty('eventId'));
-//   console.log("New Booth attendees: " + Calendar.Events.get(calendarId, props.getProperty('eventId')).attendees);
-// }
-
 function createBoothMeetingForDoctor(patientResponses) {
   // Create calendar event shared with doctor containing the Booth Meet link attached to the event
-  console.log("Creating booth event for " + doctor.getName());
   
   // Use ID and label to attach existing Meet call to calendar event
   boothMeetingUrl = getBoothMeetingUrl();
   boothMeetingId = boothMeetingUrl.substring(24);
   boothMeetingLabel = boothMeetingUrl.substring(8);
+  
+  console.log("Creating booth event for " + doctor.getName());
 
   // Set start and end time for calendar event
   var d = new Date();
@@ -127,7 +116,7 @@ function createBoothMeetingForDoctor(patientResponses) {
       "maxAttendees": 10,
       "sendUpdates": "all",
       "summary": 'ENDEAVR Telemedicine ' + patientResponses[1].trim().substring(0,3).toUpperCase() + ' - ' + doctor.getName(),
-      "description": 'Telemedicine Visit with New ENDEAVR Patient\nCheck email for more information.\n'
+      "description": 'Booth Telemedicine Visit with New ENDEAVR Patient\nCheck email for more information.\n'
         + 'Patient Intake Data:\n' + doctor.destinationUrl
         + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVR devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n' + doctor.rddUrl,
       "end": {
@@ -164,7 +153,7 @@ function createBoothMeetingForDoctor(patientResponses) {
   const args = {"conferenceDataVersion": 1, supportsAttachments: true};
 
   try {
-        var response = Calendar.Events.insert(payload, boothappointment_calendarid, args)
+        var response = Calendar.Events.insert(payload, calendarId, args)
         console.log(`Success! ${response}`)
   } catch(e) {
     console.log(`Oh no: ${e.message}`)

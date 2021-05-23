@@ -6,28 +6,17 @@ and prepare for their doctor's appointment. The webpage also contains a liabilit
   <head>
     <base target="_top">
     <style>
-       .center {
-         display: flex;
-         justify-content: center;
-         align-items: center;
-       }
-       .vertical-center {
-         margin: 0;
-         position: absolute;
-         top: 40%;
-         left: 50%;
-         -ms-transform: translate(-50%, -40%);
-         transform: translate(-50%, -40%);
-       }
-       .center-text {
-         width: 70%;
-         position: absolute;
-         text-align: justify;
-         top: 80%;
-         left: 50%;
-         -ms-transform: translate(-50%, -80%);
-         transform: translate(-50%, -80%);
-       }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 60vw;
+        margin: 0 auto;
+      }
+      div {
+        margin: 20px auto;
+        flex: 1 1 500px;
+      }
        #startButton {
          color: white;
          background-color: #0291CC;
@@ -37,22 +26,20 @@ and prepare for their doctor's appointment. The webpage also contains a liabilit
      </style>
   </head>
   <body>
-    <br>
-    <div class="center">
-       <img src="https://i.postimg.cc/m2bXVsCY/ENDEAVR-main-logo.png" height="160px">
-     </div>
-    <br><br><br>
-    <div class="vertical-center">
+    <div>
+     <img src="https://i.postimg.cc/m2bXVsCY/ENDEAVR-main-logo.png" height="175px">
+    </div>
+
+    <div>
       <button id="startButton" onclick="openMeeting()">
         <b>START</b>
       </button>
     </div>
-    <br><br><br>
-    <div class="center-text">
-BY PRESSING THIS BUTTON, I HEREBY ASSUME ANY/ALL OF THE RISKS ASSOCIATED WITH services and study instruments received from the ENDEAVRide van and ENDEAVR telemedicine booth, including by way of example and not limitation, any risk that may arise from the negligence or carelessness on the part of the persons or entities being released, from dangerous or defective equipment or property owned, maintained, or controlled by them, or because of their possible liability without fault.
-I certify that I am sufficiently trained or prepared for participation in this activity and have not been advised to not participate by a qualified medical professional.  I certify that there are no conditions which may preclude my participation in this activity/service.
-    </div>
 
+    <div style="text-align:justify">
+BY PRESSING THIS BUTTON, I HEREBY ASSUME ANY/ALL OF THE RISKS ASSOCIATED WITH services and study instruments received from the ENDEAVRide van and ENDEAVR telemedicine booth, including by way of example and not limitation, any risk that may arise from the negligence or carelessness on the part of the persons or entities being released, from dangerous or defective equipment or property owned, maintained, or controlled by them, or because of their possible liability without fault.
+I certify that I am sufficiently trained or prepared for participation in this activity and have not been advised to not participate by a qualified medical professional. I certify that there are no conditions which may preclude my participation in this activity/service.
+    </div>
 
     <script>
 

@@ -26,7 +26,7 @@ function createMeeting(patientResponses) {
       "maxAttendees": 10,
       "sendUpdates": "all",
       "summary": 'ENDEAVRide Telemedicine ' + patientResponses[1].trim().substring(0,3).toUpperCase() + ' - ' + doctor.getName(),
-      "description": 'Telemedicine Visit with New ENDEAVRide Patient\nCheck email for more information.\n'
+      "description": 'Van Telemedicine Visit with New ENDEAVRide Patient\nCheck email for more information.\n'
         + 'Patient Intake Data:\n' + doctor.destinationUrl
         + '\nWhile you are seeing the patient, you can perform remote diagnostics using ENDEAVRide devices such as the digital throatscope, otoscope, and stethoscope. These data can be accessed instantly during the session from the following link:\n' + doctor.rddUrl,
       "end": {
