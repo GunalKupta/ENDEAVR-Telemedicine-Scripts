@@ -8,10 +8,11 @@ and telemedicine booth located in Nolanville, TX.
 Form responses:
 B: Patient name
 C: Birth date
-D: Doctor
-E-K: Vitals
-L-N: Medications and Kidney/Liver
-O-W: Problems
+D-G: Patient address/contact
+H: Doctor
+I-O: Vitals
+P-R: Medications and Kidney/Liver
+S-AA: Problems
 */
 
 let doctorSelectionColumn = 7; // Column H contains the name of the selected doctor
@@ -45,8 +46,10 @@ class EndeavrDoctor extends Doctor {
 // const drwong
 // const drcolon
 // const kunal
-// var doctor = kunal;
+// var admin = kunal;
+// var doctor = admin;
 // doctor is a global variable used to store the selected doctor
+// admin is used to store the current admin for script testing
 
 let endeavrEmail = 'ride@endeavr.city';
 let endeavrPatient = 'patient@endeavr.city';
@@ -65,7 +68,7 @@ function onFormSubmit(e){
     2. Copy the form responses (containing PHI) into the sheet that is shared with that doctor
     3. Determine whether the patient is in the van or the booth
       a. If in van, create a new Google Meet and send a formatted email to the doctor
-      b. If in booth, add the doctor to the already created Google Meet call and send a formatted email to them
+      b. If in booth, create a Calendar event with existing Booth Meet call, and send a formatted email to them
   */
   
   var values = e.values;
@@ -95,15 +98,16 @@ function onFormSubmit(e){
 }
 
 function chooseDoctor(selection) {
-  // sets global doctor variable to appropriate doctor depending on selection made in values[3]
+  // sets global doctor variable to appropriate doctor depending on selection made in values[doctorSelectionColumn]
 
   if (selection) {
     if (selection.includes('Wong')) {
       doctor = drwong;
     } else if (selection.includes('Colon')) {
       doctor = drcolon;    
-    } else if (selection.includes('Gupta')){
-      doctor = kunal;
+    } else if (selection.includes('Admin')){
+      doctor = admin;
+      boothStaffGroup = "";
     } else {
       doctor = null;
     }
